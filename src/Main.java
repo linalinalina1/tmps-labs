@@ -4,10 +4,13 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        DestinationManager manager = new DestinationManager();
+        DestinationDisplay display = new DestinationDisplay();
+
         int choice = -1;
 
         do {
-            System.out.println("\nTRAVEL PLANNER: ");
+            System.out.println("\nTravel Planner");
             System.out.println("1. Add destination");
             System.out.println("2. View destinations");
             System.out.println("3. Calculate travel cost");
@@ -25,11 +28,42 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    System.out.println("Add destination - coming soon!");
+                    System.out.print("Enter city: ");
+                    String city = scanner.nextLine().trim();
+
+                    System.out.print("Enter country: ");
+                    String country = scanner.nextLine().trim();
+
+                    if (city.isEmpty() || country.isEmpty()) {
+                        System.out.println("City and country cannot be empty.");
+                        break;
+                    }
+
+                    System.out.print("Enter estimated cost: ");
+
+                    if (!scanner.hasNextDouble()) {
+                        System.out.println("Invalid cost. Please enter a number.");
+                        scanner.nextLine();
+                        break;
+                    }
+
+                    double cost = scanner.nextDouble();
+                    scanner.nextLine();
+
+                    if (!Double.isFinite(cost) || cost < 0) {
+                        System.out.println("Cost must be a finite, non-negative number.");
+                        break;
+                    }
+
+                    manager.addDestination(
+                            new Destination(city, country, cost)
+                    );
+
+                    System.out.println("Destination added successfully!");
                     break;
 
                 case 2:
-                    System.out.println("View destinations - coming soon!");
+                    display.showDestinations(manager.getDestinations());
                     break;
 
                 case 3:
