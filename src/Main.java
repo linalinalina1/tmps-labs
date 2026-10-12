@@ -6,6 +6,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         DestinationManager manager = new DestinationManager();
         DestinationDisplay display = new DestinationDisplay();
+        TravelCostService costService = new TravelCostService();
 
         int choice = -1;
 
@@ -67,7 +68,63 @@ public class Main {
                     break;
 
                 case 3:
-                    System.out.println("Calculate travel cost - coming soon!");
+                    if (manager.getDestinations().isEmpty()) {
+                        System.out.println("No destinations available.");
+                        break;
+                    }
+
+                    display.showDestinations(manager.getDestinations());
+
+                    System.out.print("Choose destination number: ");
+
+                    if (!scanner.hasNextInt()) {
+                        System.out.println("Invalid destination number.");
+                        scanner.nextLine();
+                        break;
+                    }
+
+                    int destinationNumber = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (destinationNumber < 1 ||
+                            destinationNumber > manager.getDestinations().size()) {
+                        System.out.println("Invalid destination number.");
+                        break;
+                    }
+
+                    Destination selectedDestination =
+                            manager.getDestinations().get(destinationNumber - 1);
+
+                    System.out.println("1. Standard cost");
+                    System.out.println("2. Student discount (10%)");
+                    System.out.print("Choose calculation method: ");
+
+                    if (!scanner.hasNextInt()) {
+                        System.out.println("Invalid calculation method.");
+                        scanner.nextLine();
+                        break;
+                    }
+
+                    int calculationMethod = scanner.nextInt();
+                    scanner.nextLine();
+
+                    CostCalculator calculator;
+
+                    if (calculationMethod == 1) {
+                        calculator = new StandardCostCalculator();
+                    } else if (calculationMethod == 2) {
+                        calculator = new StudentCostCalculator();
+                    } else {
+                        System.out.println("Invalid calculation method.");
+                        break;
+                    }
+
+                    double finalCost = costService.calculateCost(
+                            selectedDestination.getEstimatedCost(),
+                            calculator
+                    );
+
+                    System.out.printf("Final travel cost: %.2f%n", finalCost);
                     break;
 
                 case 0:
