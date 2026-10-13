@@ -1,5 +1,4 @@
 
-import java.util.ArrayList;
 import java.util.List;
 
 class Destination {
@@ -27,14 +26,18 @@ class Destination {
 }
 
 class DestinationManager {
-    private final List<Destination> destinations = new ArrayList<>();
+    private final DestinationRepository repository;
+
+    public DestinationManager(DestinationRepository repository) {
+        this.repository = repository;
+    }
 
     public void addDestination(Destination destination) {
-        destinations.add(destination);
+        repository.save(destination);
     }
 
     public List<Destination> getDestinations() {
-        return List.copyOf(destinations);
+        return repository.findAll();
     }
 }
 

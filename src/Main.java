@@ -1,10 +1,11 @@
-
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        DestinationManager manager = new DestinationManager();
+
+        DestinationRepository repository = new InMemoryDestinationRepository();
+        DestinationManager manager = new DestinationManager(repository);
         DestinationDisplay display = new DestinationDisplay();
         TravelCostService costService = new TravelCostService();
 
