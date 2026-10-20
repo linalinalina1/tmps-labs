@@ -1,4 +1,4 @@
-# Laboratory Work 1 – SOLID Principles
+# Laboratory Work 0 – SOLID Principles
 
 ### Course: Techniques and Mechanisms of Software Design (TMPS)
 
@@ -15,7 +15,7 @@
 
 ## 1. Introduction
 
-The purpose of Laboratory Work 1 is to understand and apply three SOLID principles in a Java application. The chosen project is **Travel Planner**, a simple console program that lets users add destinations, view their saved destinations, and calculate estimated travel costs.
+The purpose of Laboratory Work 0 is to understand and apply three SOLID principles in a Java application. The chosen project is **Travel Planner**, a simple console program that lets users add destinations, view their saved destinations, and calculate estimated travel costs.
 
 Each destination has a city, a country, and an estimated cost. Users can calculate either the standard cost or a cost with a 10% student discount. The application also checks common invalid inputs. Data is stored in memory while the program runs; no database, external dataset, or API is required.
 
@@ -226,49 +226,49 @@ The figures below are screenshots of actual test runs of the Java application.
 
 **Figure 1. Adding a destination**
 
-![Successfully adding Rome as a destination](lab1/screenshots/add-destination.png)
+![Successfully adding Rome as a destination](lab0/screenshots/add-destination.png)
 
 The user enters a city, country, and estimated cost. The application confirms successful addition.
 
 **Figure 2. Viewing destinations**
 
-![Viewing the saved Rome and Paris destinations](lab1/screenshots/view-destinations.png)
+![Viewing the saved Rome and Paris destinations](lab0/screenshots/view-destinations.png)
 
 Both destinations are displayed with their estimated costs.
 
 **Figure 3. Standard travel cost calculation**
 
-![Standard cost of 500 for Rome](lab1/screenshots/standard-cost.png)
+![Standard cost of 500 for Rome](lab0/screenshots/standard-cost.png)
 
 The standard calculator returns the original estimated cost of **500.00**.
 
 **Figure 4. Student discount calculation**
 
-![Student discount returns 450 for Rome](lab1/screenshots/student-discount.png)
+![Student discount returns 450 for Rome](lab0/screenshots/student-discount.png)
 
 The student calculator applies a 10% discount, reducing **500.00** to **450.00**.
 
 **Figure 5. Rejecting a nonnumeric cost**
 
-![Invalid text entered for estimated cost](lab1/screenshots/invalid-cost.png)
+![Invalid text entered for estimated cost](lab0/screenshots/invalid-cost.png)
 
 The application rejects text input where a numerical cost is required.
 
 **Figure 6. Rejecting a negative cost**
 
-![Negative estimated cost rejected](lab1/screenshots/negative-cost.png)
+![Negative estimated cost rejected](lab0/screenshots/negative-cost.png)
 
 Negative estimated costs are not accepted.
 
 **Figure 7. Rejecting an invalid destination selection**
 
-![Invalid destination number rejected](lab1/screenshots/invalid-destination.png)
+![Invalid destination number rejected](lab0/screenshots/invalid-destination.png)
 
 Selecting a destination number outside the available list displays a clear error.
 
 **Figure 8. Exiting the application**
 
-![Successful program exit with code zero](lab1/screenshots/exit.png)
+![Successful program exit with code zero](lab0/screenshots/exit.png)
 
 Selecting option `0` ends the program successfully.
 

@@ -8,7 +8,7 @@ and will be extended with new functionality throughout four laboratories.
 
 ## Laboratory Works
 
-- [Lab 1 – SOLID Principles](lab1/README.md)
+- [Lab 1 – SOLID Principles](lab0/README.md)
 - Lab 2 – Upcoming
 - Lab 3 – Upcoming
 - Lab 4 – Upcoming
