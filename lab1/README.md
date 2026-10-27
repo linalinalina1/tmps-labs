@@ -36,7 +36,7 @@ Five commonly studied creational patterns are:
 
 This laboratory implements the first, second, and fourth patterns: Singleton, Builder, and Factory Method.
 
-### 2.2 Singleton — `Singleton.java`
+### 2.2 Singleton — `TripManager.java`
 
 The **Singleton** pattern ensures that application code uses a single shared instance of a class through a controlled access method.
 
@@ -74,7 +74,7 @@ TripManager tripManager = TripManager.getInstance();
 
 All calls to `getInstance()` return the same `TripManager` object during a single run of this application. Returning `List.copyOf(trips)` also prevents callers from directly modifying the manager's list.
 
-### 2.3 Builder — `Builder.java`
+### 2.3 Builder — `Trip.java`
 
 The **Builder** pattern separates the construction of an object from its final representation. It is useful when an object is assembled gradually or may contain a variable number of components.
 
@@ -122,7 +122,7 @@ public double getTotalCost() {
 
 For example, the tested Rome trip has a destination cost of 500, sightseeing activities costing 25 and 15, and a dining activity costing 30. Its estimated total is **570**. These are user-entered estimates, not real-world prices.
 
-### 2.4 Factory Method — `FactoryMethod.java`
+### 2.4 Factory Method — `ActivityCreator.java`
 
 The **Factory Method** pattern defines an object-creation method while allowing subclasses of the creator to decide which concrete object is produced.
 
@@ -183,9 +183,9 @@ TravelPlanner/
     SingleResponsibility.java
     OpenClosed.java
     DependencyInversion.java
-    Singleton.java
-    Builder.java
-    FactoryMethod.java
+    TripManager.java
+    Trip.java
+    ActivityCreator.java
   lab0/
     README.md
     screenshots/
