@@ -1,0 +1,24 @@
+classDiagram
+    class Trip {
+        -Destination destination
+        -List~Activity~ activities
+        -Trip(Builder builder)
+        +getDestination() Destination
+        +getActivities() List~Activity~
+        +getTotalCost() double
+    }
+    class Builder {
+        -Destination destination
+        -List~Activity~ activities
+        +Builder(Destination destination)
+        +addActivity(Activity activity) Builder
+        +build() Trip
+    }
+    class Destination
+    class Activity {
+        <<interface>>
+    }
+    Trip .. Builder : nested class (Trip.Builder)
+    Builder ..> Trip : constructs
+    Trip --> Destination : destination
+    Trip "1" o-- "1..*" Activity : activities

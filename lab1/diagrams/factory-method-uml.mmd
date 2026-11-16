@@ -1,0 +1,39 @@
+classDiagram
+    class Activity {
+        <<interface>>
+        +getName() String
+        +getType() String
+        +getCost() double
+    }
+    class SightseeingActivity {
+        -String name
+        -double cost
+        +getName() String
+        +getType() String
+        +getCost() double
+    }
+    class DiningActivity {
+        -String name
+        -double cost
+        +getName() String
+        +getType() String
+        +getCost() double
+    }
+    class ActivityCreator {
+        <<abstract>>
+        +createActivity(String name, double cost) Activity
+        #validate(String name, double cost) void
+    }
+    class SightseeingCreator {
+        +createActivity(String name, double cost) Activity
+    }
+    class DiningCreator {
+        +createActivity(String name, double cost) Activity
+    }
+    Activity <|.. SightseeingActivity
+    Activity <|.. DiningActivity
+    ActivityCreator <|-- SightseeingCreator
+    ActivityCreator <|-- DiningCreator
+    SightseeingCreator ..> SightseeingActivity : creates
+    DiningCreator ..> DiningActivity : creates
+    ActivityCreator ..> Activity : returns
