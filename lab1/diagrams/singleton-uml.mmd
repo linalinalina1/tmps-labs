@@ -1,0 +1,12 @@
+classDiagram
+    class TripManager {
+        -TripManager INSTANCE
+        -List~Trip~ trips
+        -TripManager()
+        +getInstance() TripManager
+        +addTrip(Trip trip) void
+        +getTrips() List~Trip~
+    }
+    class Trip
+    TripManager "1" o-- "0..*" Trip : stores
+    note for TripManager "INSTANCE and getInstance() are static"
