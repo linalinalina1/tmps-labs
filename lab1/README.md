@@ -26,13 +26,14 @@ All data is stored in memory while the application runs. No database, external A
 
 Creational design patterns deal with object creation. They can make code more flexible by controlling the creation process, avoiding unnecessary dependence on concrete classes, or simplifying the construction of objects with several components.
 
-Five commonly studied creational patterns are:
+The following creational patterns are covered in this laboratory:
 
 1. **Singleton** — provides a shared access point to one instance of a class.
 2. **Builder** — constructs a complex object step by step.
 3. **Prototype** — creates new objects by copying an existing object.
 4. **Factory Method** — delegates the choice of concrete product to specialized creator classes.
 5. **Abstract Factory** — provides an interface for creating families of related objects.
+6. **Object Pooling** - manages a collection of reusable objects to avoid repeatedly creating and destroying them.
 
 This laboratory implements the first, second, and fourth patterns: Singleton, Builder, and Factory Method.
 
@@ -73,6 +74,10 @@ TripManager tripManager = TripManager.getInstance();
 ```
 
 All calls to `getInstance()` return the same `TripManager` object during a single run of this application. Returning `List.copyOf(trips)` also prevents callers from directly modifying the manager's list.
+
+**UML Class Diagram: Singleton**
+
+![Singleton UML Diagram](diagrams/singleton-uml.svg)
 
 ### 2.3 Builder — `Trip.java`
 
@@ -122,6 +127,10 @@ public double getTotalCost() {
 
 For example, the tested Rome trip has a destination cost of 500, sightseeing activities costing 25 and 15, and a dining activity costing 30. Its estimated total is **570**. These are user-entered estimates, not real-world prices.
 
+**UML Class Diagram: Builder**
+
+![Builder UML Diagram](diagrams/builder-uml.svg)
+
 ### 2.4 Factory Method — `ActivityCreator.java`
 
 The **Factory Method** pattern defines an object-creation method while allowing subclasses of the creator to decide which concrete object is produced.
@@ -169,6 +178,10 @@ Activity activity = creator.createActivity("Colosseum", 25);
 ```
 
 This demonstrates Factory Method rather than a simple factory because separate creator subclasses override the creation method to select a concrete activity class.
+
+**UML Class Diagram: Factory Method**
+
+![Factory Method UML Diagram](diagrams/factory-method-uml.svg)
 
 ## 3. Implementation
 
