@@ -1,5 +1,11 @@
+package app;
 
 import java.util.Scanner;
+import model.Activity;
+import model.Destination;
+import model.Trip;
+import solid.*;
+import patterns.creational.*;
 
 public class Main {
     public static void main(String[] args) {

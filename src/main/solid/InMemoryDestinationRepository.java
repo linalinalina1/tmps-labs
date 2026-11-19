@@ -1,12 +1,10 @@
+package solid;
+
 import java.util.ArrayList;
 import java.util.List;
+import model.Destination;
 
-interface DestinationRepository {
-    void save(Destination destination);
-    List<Destination> findAll();
-}
-
-class InMemoryDestinationRepository implements DestinationRepository {
+public class InMemoryDestinationRepository implements DestinationRepository {
     private final List<Destination> destinations = new ArrayList<>();
 
     @Override

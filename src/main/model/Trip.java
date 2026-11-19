@@ -1,8 +1,9 @@
+package model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class Trip {
+public class Trip {
     private final Destination destination;
     private final List<Activity> activities;
 
@@ -29,7 +30,7 @@ class Trip {
         return total;
     }
 
-    static class Builder {
+    public static class Builder {
         private final Destination destination;
         private final List<Activity> activities = new ArrayList<>();
 

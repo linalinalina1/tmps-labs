@@ -1,8 +1,10 @@
+package patterns.creational;
 
 import java.util.ArrayList;
 import java.util.List;
+import model.Trip;
 
-class TripManager {
+public class TripManager {
     private static final TripManager INSTANCE = new TripManager();
     private final List<Trip> trips = new ArrayList<>();
 
