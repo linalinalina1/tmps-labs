@@ -5,7 +5,9 @@ import model.Activity;
 import model.Destination;
 import model.Trip;
 import solid.*;
-import patterns.creational.*;
+import patterns.creational.builder.TripBuilder;
+import patterns.creational.factorymethod.*;
+import patterns.creational.singleton.TripManager;
 
 public class Main {
     public static void main(String[] args) {
@@ -164,7 +166,7 @@ public class Main {
                     Destination tripDestination =
                             manager.getDestinations().get(tripDestinationNumber - 1);
 
-                    Trip.Builder builder = new Trip.Builder(tripDestination);
+                    TripBuilder builder = new TripBuilder(tripDestination);
                     int activityCount = 0;
                     boolean addingActivities = true;
 

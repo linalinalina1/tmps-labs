@@ -1,4 +1,4 @@
-package patterns.creational;
+package patterns.creational.singleton;
 
 import java.util.ArrayList;
 import java.util.List;

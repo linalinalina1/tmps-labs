@@ -1,15 +1,28 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Trip {
     private final Destination destination;
     private final List<Activity> activities;
 
-    private Trip(Builder builder) {
-        this.destination = builder.destination;
-        this.activities = List.copyOf(builder.activities);
+    public Trip(Destination destination, List<Activity> activities) {
+        if (destination == null) {
+            throw new IllegalArgumentException("Destination is required.");
+        }
+
+        if (activities == null || activities.isEmpty()) {
+            throw new IllegalStateException(
+                    "A trip must have at least one activity."
+            );
+        }
+
+        if (activities.contains(null)) {
+            throw new IllegalArgumentException("Activity is required.");
+        }
+
+        this.destination = destination;
+        this.activities = List.copyOf(activities);
     }
 
     public Destination getDestination() {
@@ -28,37 +41,5 @@ public class Trip {
         }
 
         return total;
-    }
-
-    public static class Builder {
-        private final Destination destination;
-        private final List<Activity> activities = new ArrayList<>();
-
-        public Builder(Destination destination) {
-            if (destination == null) {
-                throw new IllegalArgumentException("Destination is required.");
-            }
-
-            this.destination = destination;
-        }
-
-        public Builder addActivity(Activity activity) {
-            if (activity == null) {
-                throw new IllegalArgumentException("Activity is required.");
-            }
-
-            activities.add(activity);
-            return this;
-        }
-
-        public Trip build() {
-            if (activities.isEmpty()) {
-                throw new IllegalStateException(
-                        "A trip must have at least one activity."
-                );
-            }
-
-            return new Trip(this);
-        }
     }
 }

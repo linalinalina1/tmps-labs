@@ -1,4 +1,4 @@
-package patterns.creational;
+package patterns.creational.factorymethod;
 
 import model.Activity;
 import model.DiningActivity;
