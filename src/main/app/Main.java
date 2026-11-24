@@ -1,3 +1,4 @@
+
 package app;
 
 import java.util.Scanner;
@@ -8,6 +9,7 @@ import solid.*;
 import patterns.creational.builder.TripBuilder;
 import patterns.creational.factorymethod.*;
 import patterns.creational.singleton.TripManager;
+import patterns.structural.composite.ActivityGroup;
 
 public class Main {
     public static void main(String[] args) {
@@ -167,6 +169,9 @@ public class Main {
                             manager.getDestinations().get(tripDestinationNumber - 1);
 
                     TripBuilder builder = new TripBuilder(tripDestination);
+                    ActivityGroup tripActivities = new ActivityGroup("Trip activities");
+                    ActivityGroup sightseeingActivities = new ActivityGroup("Sightseeing");
+                    ActivityGroup diningActivities = new ActivityGroup("Dining");
                     int activityCount = 0;
                     boolean addingActivities = true;
 
@@ -236,12 +241,26 @@ public class Main {
                         Activity activity =
                                 creator.createActivity(activityName, activityCost);
 
-                        builder.addActivity(activity);
+                        if (activityType == 1) {
+                            sightseeingActivities.addActivity(activity);
+                        } else {
+                            diningActivities.addActivity(activity);
+                        }
+
                         activityCount++;
 
                         System.out.println("Activity added successfully!");
                     }
 
+                    if (!sightseeingActivities.getActivities().isEmpty()) {
+                        tripActivities.addActivity(sightseeingActivities);
+                    }
+
+                    if (!diningActivities.getActivities().isEmpty()) {
+                        tripActivities.addActivity(diningActivities);
+                    }
+
+                    builder.addActivity(tripActivities);
                     Trip trip = builder.build();
                     tripManager.addTrip(trip);
 
@@ -273,12 +292,7 @@ public class Main {
                         );
 
                         for (Activity savedActivity : savedTrip.getActivities()) {
-                            System.out.printf(
-                                    "   %s: %s - %.2f%n",
-                                    savedActivity.getType(),
-                                    savedActivity.getName(),
-                                    savedActivity.getCost()
-                            );
+                            showActivity(savedActivity, "   ");
                         }
 
                         System.out.printf(
@@ -299,5 +313,21 @@ public class Main {
         } while (choice != 0);
 
         scanner.close();
+    }
+
+    private static void showActivity(Activity activity, String indent) {
+        System.out.printf(
+                "%s%s%s - %.2f%n",
+                indent,
+                activity instanceof ActivityGroup ? "" : activity.getType() + ": ",
+                activity.getName(),
+                activity.getCost()
+        );
+
+        if (activity instanceof ActivityGroup group) {
+            for (Activity child : group.getActivities()) {
+                showActivity(child, indent + "  ");
+            }
+        }
     }
 }
