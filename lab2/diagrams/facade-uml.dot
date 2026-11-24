@@ -1,0 +1,17 @@
+digraph UML {
+ graph [rankdir=LR, bgcolor="white", nodesep=.55, ranksep=.8, fontname="Arial"];
+ node [shape=record, style="filled", fillcolor="#e9f1fc", color="#657b97", fontname="Arial", fontsize=11];
+ edge [color="#657b97", fontname="Arial", fontsize=10];
+ Main [label="{Main|+ main(args: String[]): void\l}"];
+ API [label="{«interface» TravelPlanner|+ addDestination(destination): void\l+ getDestinations(): List\l+ calculateTravelCost(...): double\l+ createActivity(...): Activity\l+ createTrip(...): void\l+ getBookings(): List\l}"];
+ Facade [label="{TravelPlannerFacade|- destinationManager: DestinationManager\l- costService: TravelCostService\l- tripManager: TripManager\l- sightseeingCreator: ActivityCreator\l- diningCreator: ActivityCreator\l|+ createTrip(...): void\l+ createActivity(...): Activity\l}"];
+ Dest [label="DestinationManager"];
+ Creators [label="ActivityCreator"];
+ Composite [label="ActivityGroup"];
+ Builder [label="TripBuilder"];
+ Decorator [label="TripPrice / Decorators"];
+ Singleton [label="TripManager"];
+ Main -> API [label="calls"];
+ Facade -> API [arrowhead=empty, style=dashed];
+ Facade -> Dest; Facade -> Creators; Facade -> Composite; Facade -> Builder; Facade -> Decorator; Facade -> Singleton;
+}

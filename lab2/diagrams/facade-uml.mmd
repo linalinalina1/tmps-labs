@@ -1,0 +1,30 @@
+classDiagram
+    class Main {
+        +main(String[]) void
+    }
+    class TravelPlanner {
+        <<interface>>
+        +addDestination(Destination) void
+        +getDestinations() List~Destination~
+        +calculateTravelCost(Destination, boolean) double
+        +createActivity(int, String, double) Activity
+        +createTrip(Destination, List~Activity~, double, double) void
+        +getBookings() List~TripBooking~
+    }
+    class TravelPlannerFacade {
+        -DestinationManager destinationManager
+        -TravelCostService costService
+        -TripManager tripManager
+        -ActivityCreator sightseeingCreator
+        -ActivityCreator diningCreator
+        +createTrip(Destination, List~Activity~, double, double) void
+    }
+    Main ..> TravelPlanner : calls
+    TravelPlanner <|.. TravelPlannerFacade
+    TravelPlannerFacade --> DestinationManager
+    TravelPlannerFacade --> TravelCostService
+    TravelPlannerFacade --> ActivityCreator
+    TravelPlannerFacade ..> ActivityGroup : creates
+    TravelPlannerFacade ..> TripBuilder : uses
+    TravelPlannerFacade ..> TripPrice : decorates
+    TravelPlannerFacade --> TripManager : stores booking

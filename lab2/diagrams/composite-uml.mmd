@@ -1,0 +1,28 @@
+classDiagram
+    class Activity {
+        <<interface>>
+        +getName() String
+        +getType() String
+        +getCost() double
+    }
+    class SightseeingActivity {
+        -String name
+        -double cost
+        +getCost() double
+    }
+    class DiningActivity {
+        -String name
+        -double cost
+        +getCost() double
+    }
+    class ActivityGroup {
+        -String name
+        -List~Activity~ activities
+        +addActivity(Activity) void
+        +getActivities() List~Activity~
+        +getCost() double
+    }
+    Activity <|.. SightseeingActivity
+    Activity <|.. DiningActivity
+    Activity <|.. ActivityGroup
+    ActivityGroup o-- "0..*" Activity : contains

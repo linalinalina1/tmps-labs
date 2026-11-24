@@ -1,0 +1,13 @@
+digraph UML {
+ graph [rankdir=TB, bgcolor="white", nodesep=.5, ranksep=.7, fontname="Arial"];
+ node [shape=record, style="filled", fillcolor="#e9f1fc", color="#657b97", fontname="Arial", fontsize=12];
+ edge [color="#657b97", fontname="Arial", fontsize=10];
+ Activity [label="{«interface» Activity|+ getName(): String\l+ getType(): String\l+ getCost(): double\l}"];
+ Sightseeing [label="{SightseeingActivity|- name: String\l- cost: double\l|+ getCost(): double\l}"];
+ Dining [label="{DiningActivity|- name: String\l- cost: double\l|+ getCost(): double\l}"];
+ Group [label="{ActivityGroup|- name: String\l- activities: List\<Activity\>\l|+ addActivity(activity: Activity): void\l+ getActivities(): List\<Activity\>\l+ getCost(): double\l}"];
+ Sightseeing -> Activity [arrowhead=empty, style=dashed];
+ Dining -> Activity [arrowhead=empty, style=dashed];
+ Group -> Activity [arrowhead=empty, style=dashed];
+ Group -> Activity [label="contains 0..*", arrowtail=diamond, arrowhead=none, dir=both, constraint=false];
+}

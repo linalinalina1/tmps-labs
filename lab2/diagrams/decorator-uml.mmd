@@ -1,0 +1,38 @@
+classDiagram
+    class TripPrice {
+        <<interface>>
+        +getCost() double
+        +getDescription() String
+        +getBreakdown() List~PriceItem~
+    }
+    class BasicTripPrice {
+        -Trip trip
+        +getCost() double
+    }
+    class TripPriceDecorator {
+        <<abstract>>
+        #TripPrice wrapped
+        +getCost() double
+        +getBreakdown() List~PriceItem~
+    }
+    class InsuranceDecorator {
+        -double fee
+        +getCost() double
+        +getBreakdown() List~PriceItem~
+    }
+    class AirportTransferDecorator {
+        -double fee
+        +getCost() double
+        +getBreakdown() List~PriceItem~
+    }
+    class PriceItem {
+        <<record>>
+        +String description
+        +double cost
+    }
+    TripPrice <|.. BasicTripPrice
+    TripPrice <|.. TripPriceDecorator
+    TripPriceDecorator <|-- InsuranceDecorator
+    TripPriceDecorator <|-- AirportTransferDecorator
+    TripPriceDecorator o-- TripPrice : wraps
+    TripPrice ..> PriceItem : breakdown

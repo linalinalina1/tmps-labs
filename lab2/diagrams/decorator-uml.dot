@@ -1,0 +1,17 @@
+digraph UML {
+ graph [rankdir=LR, bgcolor="white", nodesep=.5, ranksep=.75, fontname="Arial"];
+ node [shape=record, style="filled", fillcolor="#e9f1fc", color="#657b97", fontname="Arial", fontsize=11];
+ edge [color="#657b97", fontname="Arial", fontsize=10];
+ TP [label="{«interface» TripPrice|+ getCost(): double\l+ getDescription(): String\l+ getBreakdown(): List\<PriceItem\>\l}"];
+ BP [label="{BasicTripPrice|- trip: Trip\l|+ getCost(): double\l}"];
+ TD [label="{«abstract» TripPriceDecorator|# wrapped: TripPrice\l|+ getCost(): double\l+ getBreakdown(): List\<PriceItem\>\l}"];
+ Ins [label="{InsuranceDecorator|- fee: double\l|+ getCost(): double\l+ getBreakdown(): List\<PriceItem\>\l}"];
+ Air [label="{AirportTransferDecorator|- fee: double\l|+ getCost(): double\l+ getBreakdown(): List\<PriceItem\>\l}"];
+ Item [label="{PriceItem|+ description: String\l+ cost: double\l}"];
+ BP -> TP [arrowhead=empty, style=dashed];
+ TD -> TP [arrowhead=empty, style=dashed];
+ Ins -> TD [arrowhead=empty];
+ Air -> TD [arrowhead=empty];
+ TD -> TP [label="wraps 1", arrowtail=diamond, arrowhead=none, dir=both, constraint=false];
+ TP -> Item [label="breakdown", style=dashed, constraint=false];
+}
