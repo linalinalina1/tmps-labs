@@ -1,0 +1,7 @@
+PASS Composite: leaves and groups share Activity interface
+PASS Composite: nested category groups calculate total
+PASS Decorator: stacked services provide price breakdown
+PASS Decorator: wrapping keeps base price unchanged
+PASS Facade: full trip creation integrates patterns
+PASS Facade: destination pricing and no optional services
+All 6 tests passed.
