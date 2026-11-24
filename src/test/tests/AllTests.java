@@ -1,0 +1,33 @@
+package tests;
+
+public class AllTests {
+    private static int passed = 0;
+
+    private static void run(String name, Runnable test) {
+        try {
+            test.run();
+            passed++;
+            System.out.println("PASS " + name);
+        } catch (Throwable error) {
+            System.err.println("FAIL " + name + ": " + error);
+            throw error;
+        }
+    }
+
+    public static void main(String[] args) {
+        run("Composite: leaves and groups share Activity interface",
+                CompositeTests::testLeavesAndGroupsShareInterface);
+        run("Composite: nested category groups calculate total",
+                CompositeTests::testNestedGroupsCalculateTotal);
+        run("Decorator: stacked services provide price breakdown",
+                DecoratorTests::testStackingAndPriceBreakdown);
+        run("Decorator: wrapping keeps base price unchanged",
+                DecoratorTests::testWrappingDoesNotChangeBase);
+        run("Facade: full trip creation integrates patterns",
+                FacadeTests::testFullTripCreation);
+        run("Facade: destination pricing and no optional services",
+                FacadeTests::testDestinationCostAndNoExtras);
+
+        System.out.println("All " + passed + " tests passed.");
+    }
+}
