@@ -2,11 +2,11 @@ package patterns.creational.singleton;
 
 import java.util.ArrayList;
 import java.util.List;
-import model.Trip;
+import model.TripBooking;
 
 public class TripManager {
     private static final TripManager INSTANCE = new TripManager();
-    private final List<Trip> trips = new ArrayList<>();
+    private final List<TripBooking> bookings = new ArrayList<>();
 
     private TripManager() {
     }
@@ -15,15 +15,15 @@ public class TripManager {
         return INSTANCE;
     }
 
-    public void addTrip(Trip trip) {
-        if (trip == null) {
-            throw new IllegalArgumentException("Trip is required.");
+    public void addBooking(TripBooking booking) {
+        if (booking == null) {
+            throw new IllegalArgumentException("Booking is required.");
         }
 
-        trips.add(trip);
+        bookings.add(booking);
     }
 
-    public List<Trip> getTrips() {
-        return List.copyOf(trips);
+    public List<TripBooking> getBookings() {
+        return List.copyOf(bookings);
     }
 }
