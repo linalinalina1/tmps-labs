@@ -1,26 +1,24 @@
 package app;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import model.Activity;
 import model.Destination;
 import model.Trip;
 import model.TripBooking;
-import solid.*;
-import patterns.creational.builder.TripBuilder;
-import patterns.creational.factorymethod.*;
-import patterns.creational.singleton.TripManager;
+import solid.DestinationDisplay;
 import patterns.structural.composite.ActivityGroup;
-import patterns.structural.decorator.*;
+import patterns.structural.decorator.PriceItem;
+import patterns.structural.facade.TravelPlanner;
+import patterns.structural.facade.TravelPlannerFacade;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        DestinationRepository repository = new InMemoryDestinationRepository();
-        DestinationManager manager = new DestinationManager(repository);
+        TravelPlanner planner = new TravelPlannerFacade();
         DestinationDisplay display = new DestinationDisplay();
-        TravelCostService costService = new TravelCostService();
-        TripManager tripManager = TripManager.getInstance();
 
         int choice = -1;
 
@@ -72,7 +70,7 @@ public class Main {
                         break;
                     }
 
-                    manager.addDestination(
+                    planner.addDestination(
                             new Destination(city, country, cost)
                     );
 
@@ -80,16 +78,16 @@ public class Main {
                     break;
 
                 case 2:
-                    display.showDestinations(manager.getDestinations());
+                    display.showDestinations(planner.getDestinations());
                     break;
 
                 case 3:
-                    if (manager.getDestinations().isEmpty()) {
+                    if (planner.getDestinations().isEmpty()) {
                         System.out.println("No destinations available.");
                         break;
                     }
 
-                    display.showDestinations(manager.getDestinations());
+                    display.showDestinations(planner.getDestinations());
                     System.out.print("Choose destination number: ");
 
                     if (!scanner.hasNextInt()) {
@@ -102,13 +100,13 @@ public class Main {
                     scanner.nextLine();
 
                     if (destinationNumber < 1 ||
-                            destinationNumber > manager.getDestinations().size()) {
+                            destinationNumber > planner.getDestinations().size()) {
                         System.out.println("Invalid destination number.");
                         break;
                     }
 
                     Destination selectedDestination =
-                            manager.getDestinations().get(destinationNumber - 1);
+                            planner.getDestinations().get(destinationNumber - 1);
 
                     System.out.println("1. Standard cost");
                     System.out.println("2. Student discount (10%)");
@@ -123,32 +121,26 @@ public class Main {
                     int calculationMethod = scanner.nextInt();
                     scanner.nextLine();
 
-                    CostCalculator calculator;
-
-                    if (calculationMethod == 1) {
-                        calculator = new StandardCostCalculator();
-                    } else if (calculationMethod == 2) {
-                        calculator = new StudentCostCalculator();
-                    } else {
+                    if (calculationMethod != 1 && calculationMethod != 2) {
                         System.out.println("Invalid calculation method.");
                         break;
                     }
 
-                    double finalCost = costService.calculateCost(
-                            selectedDestination.getEstimatedCost(),
-                            calculator
+                    double finalCost = planner.calculateTravelCost(
+                            selectedDestination,
+                            calculationMethod == 2
                     );
 
                     System.out.printf("Final travel cost: %.2f%n", finalCost);
                     break;
 
                 case 4:
-                    if (manager.getDestinations().isEmpty()) {
+                    if (planner.getDestinations().isEmpty()) {
                         System.out.println("Add a destination before creating a trip.");
                         break;
                     }
 
-                    display.showDestinations(manager.getDestinations());
+                    display.showDestinations(planner.getDestinations());
                     System.out.print("Choose destination number: ");
 
                     if (!scanner.hasNextInt()) {
@@ -161,18 +153,15 @@ public class Main {
                     scanner.nextLine();
 
                     if (tripDestinationNumber < 1 ||
-                            tripDestinationNumber > manager.getDestinations().size()) {
+                            tripDestinationNumber > planner.getDestinations().size()) {
                         System.out.println("Invalid destination number.");
                         break;
                     }
 
                     Destination tripDestination =
-                            manager.getDestinations().get(tripDestinationNumber - 1);
+                            planner.getDestinations().get(tripDestinationNumber - 1);
 
-                    TripBuilder builder = new TripBuilder(tripDestination);
-                    ActivityGroup tripActivities = new ActivityGroup("Trip activities");
-                    ActivityGroup sightseeingActivities = new ActivityGroup("Sightseeing");
-                    ActivityGroup diningActivities = new ActivityGroup("Dining");
+                    List<Activity> activities = new ArrayList<>();
                     int activityCount = 0;
                     boolean addingActivities = true;
 
@@ -202,13 +191,7 @@ public class Main {
                             continue;
                         }
 
-                        ActivityCreator creator;
-
-                        if (activityType == 1) {
-                            creator = new SightseeingCreator();
-                        } else if (activityType == 2) {
-                            creator = new DiningCreator();
-                        } else {
+                        if (activityType != 1 && activityType != 2) {
                             System.out.println("Invalid activity type.");
                             continue;
                         }
@@ -239,30 +222,17 @@ public class Main {
                             continue;
                         }
 
-                        Activity activity =
-                                creator.createActivity(activityName, activityCost);
+                        Activity activity = planner.createActivity(
+                                activityType,
+                                activityName,
+                                activityCost
+                        );
 
-                        if (activityType == 1) {
-                            sightseeingActivities.addActivity(activity);
-                        } else {
-                            diningActivities.addActivity(activity);
-                        }
+                        activities.add(activity);
                         activityCount++;
 
                         System.out.println("Activity added successfully!");
                     }
-
-                    if (!sightseeingActivities.getActivities().isEmpty()) {
-                        tripActivities.addActivity(sightseeingActivities);
-                    }
-
-                    if (!diningActivities.getActivities().isEmpty()) {
-                        tripActivities.addActivity(diningActivities);
-                    }
-
-                    builder.addActivity(tripActivities);
-                    Trip trip = builder.build();
-                    TripPrice price = new BasicTripPrice(trip);
 
                     System.out.print("Enter travel insurance cost (0 to skip): ");
 
@@ -278,10 +248,6 @@ public class Main {
                     if (!Double.isFinite(insuranceCost) || insuranceCost < 0) {
                         System.out.println("Insurance cost must be a finite, non-negative number.");
                         break;
-                    }
-
-                    if (insuranceCost > 0) {
-                        price = new InsuranceDecorator(price, insuranceCost);
                     }
 
                     System.out.print("Enter airport transfer cost (0 to skip): ");
@@ -300,17 +266,18 @@ public class Main {
                         break;
                     }
 
-                    if (transferCost > 0) {
-                        price = new AirportTransferDecorator(price, transferCost);
-                    }
-
-                    tripManager.addBooking(new TripBooking(trip, price));
+                    planner.createTrip(
+                            tripDestination,
+                            activities,
+                            insuranceCost,
+                            transferCost
+                    );
 
                     System.out.println("Trip created successfully!");
                     break;
 
                 case 5:
-                    if (tripManager.getBookings().isEmpty()) {
+                    if (planner.getBookings().isEmpty()) {
                         System.out.println("No trips created yet.");
                         break;
                     }
@@ -318,7 +285,7 @@ public class Main {
                     System.out.println("\nYour trips:");
                     int tripNumber = 1;
 
-                    for (TripBooking booking : tripManager.getBookings()) {
+                    for (TripBooking booking : planner.getBookings()) {
                         Trip savedTrip = booking.getTrip();
                         Destination destination = savedTrip.getDestination();
 
@@ -334,20 +301,17 @@ public class Main {
                                 destination.getEstimatedCost()
                         );
 
-                        double activitiesTotal = 0;
-
-                        for (Activity activity : savedTrip.getActivities()) {
-                            activitiesTotal += activity.getCost();
+                        double activitiesCost = 0;
+                        for (Activity savedActivity : savedTrip.getActivities()) {
+                            activitiesCost += savedActivity.getCost();
                         }
 
                         System.out.printf(
                                 "   Activities: %.2f%n",
-                                activitiesTotal
+                                activitiesCost
                         );
 
-                        double activitiesCost = 0;
                         for (Activity savedActivity : savedTrip.getActivities()) {
-                            activitiesCost += savedActivity.getCost();
 
                             if (savedActivity instanceof ActivityGroup group) {
                                 for (Activity child : group.getActivities()) {
