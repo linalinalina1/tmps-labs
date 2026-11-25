@@ -28,6 +28,11 @@ public class AllTests {
         run("Facade: destination pricing and no optional services",
                 FacadeTests::testDestinationCostAndNoExtras);
 
+        run("Strategy: standard and student prices are correct",
+                StrategyTests::testStrategiesProduceExpectedPrices);
+        run("Strategy: Facade switches strategies at runtime",
+                StrategyTests::testFacadeSwitchesStrategiesAtRuntime);
+
         System.out.println("All " + passed + " tests passed.");
     }
 }
