@@ -3,6 +3,8 @@ package app;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import patterns.behavioral.observer.BookingObserver;
+import patterns.behavioral.observer.ConsoleBookingObserver;
 import patterns.behavioral.strategy.StandardBookingPricing;
 import patterns.behavioral.strategy.StudentBookingPricing;
 import model.Activity;
@@ -20,6 +22,9 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         TravelPlanner planner = new TravelPlannerFacade();
+        BookingObserver consoleObserver = new ConsoleBookingObserver();
+        planner.addBookingObserver(consoleObserver);
+        boolean notificationsEnabled = true;
         DestinationDisplay display = new DestinationDisplay();
 
         int choice = -1;
@@ -32,6 +37,7 @@ public class Main {
             System.out.println("4. Create trip");
             System.out.println("5. View trips");
             System.out.println("6. Calculate booking price");
+            System.out.println("7. Toggle booking notifications");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 
@@ -413,6 +419,18 @@ public class Main {
                                     planner.calculateBookingPrice(selectedBooking)
                             );
                         }
+                    }
+                    break;
+
+                case 7:
+                    if (notificationsEnabled) {
+                        planner.removeBookingObserver(consoleObserver);
+                        notificationsEnabled = false;
+                        System.out.println("Booking notifications disabled.");
+                    } else {
+                        planner.addBookingObserver(consoleObserver);
+                        notificationsEnabled = true;
+                        System.out.println("Booking notifications enabled.");
                     }
                     break;
 

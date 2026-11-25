@@ -2,6 +2,7 @@ package patterns.structural.facade;
 
 import java.util.List;
 import patterns.behavioral.strategy.BookingPricingStrategy;
+import patterns.behavioral.observer.BookingObserver;
 import model.Activity;
 import model.Destination;
 import model.TripBooking;
@@ -17,4 +18,6 @@ public interface TravelPlanner {
     void setBookingPricingStrategy(BookingPricingStrategy strategy);
     String getBookingPricingStrategyName();
     double calculateBookingPrice(TripBooking booking);
+    void addBookingObserver(BookingObserver observer);
+    void removeBookingObserver(BookingObserver observer);
 }

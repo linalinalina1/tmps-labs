@@ -4,6 +4,7 @@ import java.util.List;
 import patterns.behavioral.strategy.BookingPricingContext;
 import patterns.behavioral.strategy.BookingPricingStrategy;
 import patterns.behavioral.strategy.StandardBookingPricing;
+import patterns.behavioral.observer.BookingObserver;
 import model.Activity;
 import model.Destination;
 import model.Trip;
@@ -143,6 +144,16 @@ public class TravelPlannerFacade implements TravelPlanner {
     @Override
     public double calculateBookingPrice(TripBooking booking) {
         return bookingPricingContext.calculatePrice(booking);
+    }
+
+    @Override
+    public void addBookingObserver(BookingObserver observer) {
+        tripManager.addObserver(observer);
+    }
+
+    @Override
+    public void removeBookingObserver(BookingObserver observer) {
+        tripManager.removeObserver(observer);
     }
 
     @Override
