@@ -1,6 +1,9 @@
 package patterns.structural.facade;
 
 import java.util.List;
+import patterns.behavioral.strategy.BookingPricingContext;
+import patterns.behavioral.strategy.BookingPricingStrategy;
+import patterns.behavioral.strategy.StandardBookingPricing;
 import model.Activity;
 import model.Destination;
 import model.Trip;
@@ -29,6 +32,7 @@ public class TravelPlannerFacade implements TravelPlanner {
     private final TripManager tripManager;
     private final ActivityCreator sightseeingCreator;
     private final ActivityCreator diningCreator;
+    private final BookingPricingContext bookingPricingContext;
 
     public TravelPlannerFacade() {
         DestinationRepository repository = new InMemoryDestinationRepository();
@@ -37,6 +41,7 @@ public class TravelPlannerFacade implements TravelPlanner {
         this.tripManager = TripManager.getInstance();
         this.sightseeingCreator = new SightseeingCreator();
         this.diningCreator = new DiningCreator();
+        this.bookingPricingContext = new BookingPricingContext(new StandardBookingPricing());
     }
 
     @Override
@@ -123,6 +128,21 @@ public class TravelPlannerFacade implements TravelPlanner {
         }
 
         tripManager.addBooking(new TripBooking(trip, price));
+    }
+
+    @Override
+    public void setBookingPricingStrategy(BookingPricingStrategy strategy) {
+        bookingPricingContext.setStrategy(strategy);
+    }
+
+    @Override
+    public String getBookingPricingStrategyName() {
+        return bookingPricingContext.getStrategyName();
+    }
+
+    @Override
+    public double calculateBookingPrice(TripBooking booking) {
+        return bookingPricingContext.calculatePrice(booking);
     }
 
     @Override

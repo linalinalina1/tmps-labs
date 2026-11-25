@@ -3,6 +3,8 @@ package app;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import patterns.behavioral.strategy.StandardBookingPricing;
+import patterns.behavioral.strategy.StudentBookingPricing;
 import model.Activity;
 import model.Destination;
 import model.Trip;
@@ -29,6 +31,7 @@ public class Main {
             System.out.println("3. Calculate travel cost");
             System.out.println("4. Create trip");
             System.out.println("5. View trips");
+            System.out.println("6. Calculate booking price");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 
@@ -334,6 +337,82 @@ public class Main {
                                 "   Total trip cost: %.2f%n",
                                 booking.getPrice().getCost()
                         );
+                    }
+                    break;
+
+                case 6:
+                    if (planner.getBookings().isEmpty()) {
+                        System.out.println("No trips created yet.");
+                        break;
+                    }
+
+                    System.out.println("\nChoose a booking:");
+
+                    for (int i = 0; i < planner.getBookings().size(); i++) {
+                        Destination bookingDestination =
+                                planner.getBookings().get(i).getTrip().getDestination();
+
+                        System.out.printf(
+                                "%d. %s, %s%n",
+                                i + 1,
+                                bookingDestination.getCity(),
+                                bookingDestination.getCountry()
+                        );
+                    }
+
+                    System.out.print("Choose booking number: ");
+
+                    if (!scanner.hasNextInt()) {
+                        System.out.println("Invalid booking number.");
+                        scanner.nextLine();
+                        break;
+                    }
+
+                    int bookingNumber = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (bookingNumber < 1 || bookingNumber > planner.getBookings().size()) {
+                        System.out.println("Invalid booking number.");
+                        break;
+                    }
+
+                    TripBooking selectedBooking = planner.getBookings().get(bookingNumber - 1);
+                    boolean choosingPricing = true;
+
+                    while (choosingPricing) {
+                        System.out.println("\nChoose booking pricing strategy:");
+                        System.out.println("1. Standard pricing");
+                        System.out.println("2. Student discount (10%)");
+                        System.out.println("0. Return to main menu");
+                        System.out.print("Choose an option: ");
+
+                        if (!scanner.hasNextInt()) {
+                            System.out.println("Invalid calculation method.");
+                            scanner.nextLine();
+                            continue;
+                        }
+
+                        int pricingChoice = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (pricingChoice == 0) {
+                            choosingPricing = false;
+                        } else if (pricingChoice == 1) {
+                            planner.setBookingPricingStrategy(new StandardBookingPricing());
+                        } else if (pricingChoice == 2) {
+                            planner.setBookingPricingStrategy(new StudentBookingPricing());
+                        } else {
+                            System.out.println("Invalid calculation method.");
+                            continue;
+                        }
+
+                        if (choosingPricing) {
+                            System.out.printf(
+                                    "%s price: %.2f%n",
+                                    planner.getBookingPricingStrategyName(),
+                                    planner.calculateBookingPrice(selectedBooking)
+                            );
+                        }
                     }
                     break;
 
