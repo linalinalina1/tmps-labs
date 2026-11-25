@@ -1,0 +1,13 @@
+PASS Composite: leaves and groups share Activity interface
+PASS Composite: nested category groups calculate total
+PASS Decorator: stacked services provide price breakdown
+PASS Decorator: wrapping keeps base price unchanged
+PASS Facade: full trip creation integrates patterns
+PASS Facade: destination pricing and no optional services
+PASS Strategy: standard and student prices are correct
+PASS Strategy: Facade switches strategies at runtime
+PASS Observer: subscribed observers receive creation events
+PASS Observer: unsubscribed observers receive no further events
+PASS Command: trip creation undo and Observer notification
+PASS Command: undo follows reverse execution order
+All 12 tests passed.

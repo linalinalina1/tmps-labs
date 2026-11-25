@@ -1,0 +1,35 @@
+classDiagram
+    class BookingCommand {
+        <<interface>>
+        +execute() void
+        +undo() void
+    }
+    class CreateBookingCommand {
+        -tripManager: TripManager
+        -booking: TripBooking
+        -executed: boolean
+        +execute() void
+        +undo() void
+    }
+    class BookingCommandInvoker {
+        -history: Deque~BookingCommand~
+        +execute(command: BookingCommand) void
+        +undoLast() boolean
+    }
+    class TripManager {
+        <<Receiver / Subject>>
+        +addBooking(booking: TripBooking) void
+        +removeBooking(booking: TripBooking) boolean
+    }
+    class TravelPlannerFacade {
+        <<Client>>
+        +createTrip(...) void
+        +undoLastBooking() boolean
+    }
+    class TripBooking
+    BookingCommand <|.. CreateBookingCommand : implements
+    BookingCommandInvoker o--> BookingCommand : undo history
+    CreateBookingCommand --> TripManager : receiver
+    CreateBookingCommand --> TripBooking : target
+    TravelPlannerFacade --> BookingCommandInvoker : invokes
+    TravelPlannerFacade ..> CreateBookingCommand : constructs

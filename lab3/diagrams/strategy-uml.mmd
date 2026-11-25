@@ -1,0 +1,25 @@
+classDiagram
+    class BookingPricingStrategy {
+        <<interface>>
+        +getName() String
+        +calculate(bookingCost: double) double
+    }
+    class StandardBookingPricing {
+        +getName() String
+        +calculate(bookingCost: double) double
+    }
+    class StudentBookingPricing {
+        +getName() String
+        +calculate(bookingCost: double) double
+    }
+    class BookingPricingContext {
+        -strategy: BookingPricingStrategy
+        +setStrategy(strategy: BookingPricingStrategy) void
+        +getStrategyName() String
+        +calculatePrice(booking: TripBooking) double
+    }
+    class TripBooking
+    BookingPricingStrategy <|.. StandardBookingPricing : implements
+    BookingPricingStrategy <|.. StudentBookingPricing : implements
+    BookingPricingContext o--> BookingPricingStrategy : current strategy
+    BookingPricingContext ..> TripBooking : prices

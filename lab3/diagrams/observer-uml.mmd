@@ -1,0 +1,37 @@
+classDiagram
+    class BookingObserver {
+        <<interface>>
+        +onBookingEvent(event: BookingEvent) void
+    }
+    class ConsoleBookingObserver {
+        +onBookingEvent(event: BookingEvent) void
+    }
+    class BookingHistoryObserver {
+        -events: List~BookingEvent~
+        +onBookingEvent(event: BookingEvent) void
+        +getEvents() List~BookingEvent~
+    }
+    class TripManager {
+        <<Subject / Singleton>>
+        -observers: List~BookingObserver~
+        +addObserver(observer: BookingObserver) void
+        +removeObserver(observer: BookingObserver) void
+        +addBooking(booking: TripBooking) void
+        +removeBooking(booking: TripBooking) boolean
+        -notifyObservers(event: BookingEvent) void
+    }
+    class BookingEvent {
+        <<record>>
+        +type: BookingEventType
+        +booking: TripBooking
+    }
+    class BookingEventType {
+        <<enumeration>>
+        CREATED
+        REMOVED
+    }
+    BookingObserver <|.. ConsoleBookingObserver : implements
+    BookingObserver <|.. BookingHistoryObserver : implements
+    TripManager o--> BookingObserver : subscribes / notifies
+    TripManager ..> BookingEvent : creates
+    BookingEvent --> BookingEventType : type
