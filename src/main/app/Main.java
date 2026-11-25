@@ -38,6 +38,7 @@ public class Main {
             System.out.println("5. View trips");
             System.out.println("6. Calculate booking price");
             System.out.println("7. Toggle booking notifications");
+            System.out.println("8. Undo last trip creation");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
 
@@ -431,6 +432,14 @@ public class Main {
                         planner.addBookingObserver(consoleObserver);
                         notificationsEnabled = true;
                         System.out.println("Booking notifications enabled.");
+                    }
+                    break;
+
+                case 8:
+                    if (planner.undoLastBooking()) {
+                        System.out.println("Last trip creation undone.");
+                    } else {
+                        System.out.println("No trip creation to undo.");
                     }
                     break;
 

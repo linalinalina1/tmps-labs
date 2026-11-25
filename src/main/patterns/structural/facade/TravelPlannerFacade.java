@@ -5,6 +5,8 @@ import patterns.behavioral.strategy.BookingPricingContext;
 import patterns.behavioral.strategy.BookingPricingStrategy;
 import patterns.behavioral.strategy.StandardBookingPricing;
 import patterns.behavioral.observer.BookingObserver;
+import patterns.behavioral.command.BookingCommandInvoker;
+import patterns.behavioral.command.CreateBookingCommand;
 import model.Activity;
 import model.Destination;
 import model.Trip;
@@ -34,6 +36,7 @@ public class TravelPlannerFacade implements TravelPlanner {
     private final ActivityCreator sightseeingCreator;
     private final ActivityCreator diningCreator;
     private final BookingPricingContext bookingPricingContext;
+    private final BookingCommandInvoker bookingCommands;
 
     public TravelPlannerFacade() {
         DestinationRepository repository = new InMemoryDestinationRepository();
@@ -43,6 +46,7 @@ public class TravelPlannerFacade implements TravelPlanner {
         this.sightseeingCreator = new SightseeingCreator();
         this.diningCreator = new DiningCreator();
         this.bookingPricingContext = new BookingPricingContext(new StandardBookingPricing());
+        this.bookingCommands = new BookingCommandInvoker();
     }
 
     @Override
@@ -128,7 +132,8 @@ public class TravelPlannerFacade implements TravelPlanner {
             price = new AirportTransferDecorator(price, transferCost);
         }
 
-        tripManager.addBooking(new TripBooking(trip, price));
+        TripBooking booking = new TripBooking(trip, price);
+        bookingCommands.execute(new CreateBookingCommand(tripManager, booking));
     }
 
     @Override
@@ -154,6 +159,11 @@ public class TravelPlannerFacade implements TravelPlanner {
     @Override
     public void removeBookingObserver(BookingObserver observer) {
         tripManager.removeObserver(observer);
+    }
+
+    @Override
+    public boolean undoLastBooking() {
+        return bookingCommands.undoLast();
     }
 
     @Override

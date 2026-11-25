@@ -20,4 +20,5 @@ public interface TravelPlanner {
     double calculateBookingPrice(TripBooking booking);
     void addBookingObserver(BookingObserver observer);
     void removeBookingObserver(BookingObserver observer);
+    boolean undoLastBooking();
 }
