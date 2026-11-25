@@ -33,6 +33,11 @@ public class AllTests {
         run("Strategy: Facade switches strategies at runtime",
                 StrategyTests::testFacadeSwitchesStrategiesAtRuntime);
 
+        run("Observer: subscribed observers receive creation events",
+                ObserverTests::testSubscribedObserversReceiveCreation);
+        run("Observer: unsubscribed observers receive no further events",
+                ObserverTests::testUnsubscribedObserversStopReceivingEvents);
+
         System.out.println("All " + passed + " tests passed.");
     }
 }
