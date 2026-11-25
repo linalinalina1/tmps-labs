@@ -38,6 +38,11 @@ public class AllTests {
         run("Observer: unsubscribed observers receive no further events",
                 ObserverTests::testUnsubscribedObserversStopReceivingEvents);
 
+        run("Command: trip creation undo and Observer notification",
+                CommandTests::testFacadeCreationCanBeUndoneAndNotifiesObservers);
+        run("Command: undo follows reverse execution order",
+                CommandTests::testInvokerUndoesCommandsInReverseOrder);
+
         System.out.println("All " + passed + " tests passed.");
     }
 }
